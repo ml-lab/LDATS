@@ -39,12 +39,38 @@ devtools::install_github("weecology/LDATS")
 
 For this vignette, we will be using rodent data from the control plots of the
 [Portal Project](https://github.com/weecology/portaldata), which come with
-the **LDATS** package
+the **LDATS** package.
 
 ```{r}
 data(rodents)
+```
+
+`rodents` contains two elements. The `document_term_table` is a table of species (terms) abundances x sampling period:
+
+```{r}
 head(rodents$document_term_table, 10)
+```
+
+The `document_covariate_table` is a table of `newmoons`, or timesteps, and their corresponding covariate values, in this case `sin_year` and `cos_year`.
+
+```{r}
 head(rodents$document_covariate_table, 10)
 ```
 
 
+## Full model using `LDA_TS`
+
+* LDA_TS using defaults
+
+```{r}
+
+full_ldats <- LDA_TS(rodents[[1]], rodents[[2]], topics = 2, nseeds = 2, formulas = ~1, nchangepoints = 2, weights = document_weights(rodents[[1]]))
+
+plot(full_ldats)
+
+```
+
+* explore arguments, change controls lists
+* rerun with new settings
+
+## Running component models individually
